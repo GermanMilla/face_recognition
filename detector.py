@@ -32,7 +32,8 @@ def encode_known_faces(
     with encodings_location.open(mode="wb") as f:
         pickle.dump(name_encodings, f)
 
-#encode_known_faces()
+# entrenar el modelo
+# encode_known_faces()
 
 def recognize_faces(
     image_location: str,
@@ -60,9 +61,11 @@ def recognize_faces(
         print(name, bounding_box)
 
 
-def _recognize_face(unknown_encoding, loaded_encodings):
+def _recognize_face(unknown_encoding, loaded_encodings, tolerance=0.4):
     boolean_matches = face_recognition.compare_faces(
-        loaded_encodings["encodings"], unknown_encoding
+        loaded_encodings["encodings"], 
+        unknown_encoding,
+        tolerance=tolerance
     )
     votes = Counter(
         name
@@ -73,5 +76,5 @@ def _recognize_face(unknown_encoding, loaded_encodings):
         return votes.most_common(1)[0][0]
 
 #test call
-recognize_faces("unknown.jpg")
+recognize_faces("Dui.png")
 
